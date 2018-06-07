@@ -1,0 +1,24 @@
+Hello Piush!
+
+library("stringdist")
+library("tm")
+
+setwd("D:/Enit_3A/Stage_Sherbrooke")
+data=read.csv(file="data1.csv",sep= ";")
+datat=read.csv(file="gvkey.csv",sep= ";")
+
+doc=Corpus(VectorSource(data$company))
+doc = tm_map(doc, content_transformer(tolower))
+doc =tm_map(doc, removeWords, c('inc','ltd', 'llc',  
+                                'plc', 'AB', 'sa', 'corp', 'limited', 'ag','corp','corp.','co'))
+docs = tm_map(docs, removePunctuation)
+inspect(doc)
+test=doc$content[1:1000]
+##########################""
+doc1=Corpus(VectorSource(datat$Company_name))
+doc1= tm_map(doc1, content_transformer(tolower))
+doc1 =tm_map(doc1, removeWords, c('inc','ltd', 'llc',  
+                                'plc', 'AB', 'sa', 'corp', 'limited', 'ag','corp','corp.','co'))
+
+tt=doc1$content
+matching=amatch(test,tt,maxDist=2)
